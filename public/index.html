@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+
+</head>
+<body>
+    <h1>test</h1>
+
+	<div id="messages">
+	 <p>val1: <span id="val1" class="data"></span>..</p>
+	 <p>val2: <span id="val2" class="data"></span>..</p>
+	 </div>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+
+   
+
+    <script>
+		var socket = io();
+		
+		var val1 = document.getElementById('val1');
+		var val2 = document.getElementById('val2');
+		var form = document.getElementById('form');
+		var input = document.getElementById('input');
+
+
+		form.addEventListener('submit', function(e) {
+			e.preventDefault();
+			if (input.value) {
+			  socket.emit('message', input.value);
+			  input.value = '';
+			  console.log("sending OK");
+			}
+		 });
+
+		 socket.on('data', (msg) => {
+			//console.log(msg);
+			const obj = JSON.parse(msg);
+			console.log(obj);
+			val1.innerText = obj.val1;
+			val2.innerText = obj.val2;
+			
+		 });
+
+	</script>
+
+
+   
+</body>
+</html>
